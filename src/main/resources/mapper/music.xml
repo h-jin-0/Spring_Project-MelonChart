@@ -2,17 +2,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nhj.springProjectmelon.repository.MusicRepository">
+<mapper
+	namespace="com.nhj.springProjectmelon.repository.MusicRepository">
 
-<select id="findAll"
+	<select id="findAll"
 		resultType="com.nhj.springProjectmelon.model.music.Music">
 		select * from music order by id
+	</select>
+	<select id="findById"
+		resultType="com.nhj.springProjectmelon.model.music.Music">
+		select * from music where id=#{id}
 	</select>
 
 	<insert id="save">
 		insert into
-		music(title,singer,album,photo)
-		values(#{title},#{singer},#{album},#{photo})
+		music(title,singer,album,photo,songNo,albumDate,genre,lyrics)
+		values(#{title},#{singer},#{album},#{photo},#{songNo},#{albumDate},#{genre},#{lyrics})
 	</insert>
 
 </mapper>

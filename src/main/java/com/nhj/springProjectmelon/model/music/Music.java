@@ -12,7 +12,12 @@ public class Music {
 	private String title;
 	private String singer;
 	private String album;
+	private String albumDate;
 	private String photo;
-	private int heart;
-	
+	private String genre;
+	private String lyrics;
+	private int songNo;
+	private int heartCount;
+
+
 }

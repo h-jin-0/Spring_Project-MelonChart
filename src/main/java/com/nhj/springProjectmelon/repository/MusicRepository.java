@@ -7,4 +7,5 @@ import com.nhj.springProjectmelon.model.music.Music;
 public interface MusicRepository {
 	List<Music> findAll();
 	int save(Music music);
+	Music findById(int id);
 }

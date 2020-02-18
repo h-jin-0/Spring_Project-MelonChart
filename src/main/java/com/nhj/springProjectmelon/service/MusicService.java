@@ -1,9 +1,12 @@
 package com.nhj.springProjectmelon.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,9 +26,7 @@ public class MusicService {
 
 	@Transactional
 	public List<Music> melonChart() {
-
 		return musicRepository.findAll();
-
 	}
 
 	@Transactional
@@ -40,42 +41,55 @@ public class MusicService {
 			Elements albums = docMelon.select(".wrap_song_info .rank03");
 			Elements titles = docMelon.select(".wrap_song_info .rank01 a");
 			Elements singers_els = docMelon.select(".wrap_song_info .rank02");
-			Elements photos = docMelon.select(".image_typeAll img");
-			
+			Elements songNos = docMelon.select("tbody tr");
+
 			for (Element el : singers_els) {
 				singer = el.select("span a").text();
 				singers.add(singer);
 
 			}
 			for (int i = 0; i < titles.size(); i++) {
-				music.setAlbum(albums.get(i).text());
 				music.setTitle(titles.get(i).text());
 				music.setSinger(singers.get(i));
-				music.setPhoto(photos.get(i).attr("src"));
+				music.setAlbum(albums.get(i).text());
+			
+				music.setSongNo(Integer.parseInt(songNos.get(i).attr("data-song-no")));
+				int songNo = Integer.parseInt(songNos.get(i).attr("data-song-no"));
+
+				String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36";
+				Document doc = Jsoup.connect("https://www.melon.com/song/detail.htm?songId=" + songNo)
+						.header("Content-Type", "application/json;charset=UTF-8").userAgent(USER_AGENT)
+						.method(Connection.Method.GET).ignoreContentType(true).get();
+				Elements photos = doc.select(".image_typeAll img");
+				Elements others = doc.select(".list dd");
+				Elements lyric_el = doc.select("#d_video_summary");
 				
-				System.out.println("albums : "+albums.get(i).text());
-				System.out.println("title : "+titles.get(i).text());
-				System.out.println("singers : "+singers.get(i));
-				System.out.println("photos : "+photos.get(i).attr("src"));
-	
+				String beforeLyrics = lyric_el.get(0).html();
+				String lyrics = beforeLyrics.substring(beforeLyrics.indexOf(">") + 1, beforeLyrics.length());
+		
+				Date originDate=new SimpleDateFormat("yyyy.MM.dd").parse(others.get(1).html());
+				SimpleDateFormat newFormat=new SimpleDateFormat("yyyy-MM-dd");
+				
+				music.setPhoto(photos.attr("src"));
+				music.setLyrics(lyrics);
+				music.setGenre(others.get(2).html());	
+				music.setAlbumDate((newFormat.format(originDate)));
+				
 				musicRepository.save(music);
 				
-//				String title = titles.get(i).text();
-//				title = title.replace(" ", "+");
-//				title = title.replace("(", "%28");
-//				title = title.replace(")", "%29");
-//				title = title.replace(",", "%2C");
-//				Document docYoutube = Jsoup.connect("https://www.youtube.com/results?search_query=" + title + "-MV").get();
-//				Elements musicVideoLink_el = docYoutube.select("h3.yt-lockup-title a");
-//				String musicVideoLink = musicVideoLink_el.attr("href");
-//				String musicLink = musicVideoLink.substring(musicVideoLink.indexOf("=") + 1, musicVideoLink.length());
-//				melon.setMusicLink(musicLink);
-//				System.out.println(musicVideoLink);
-//				System.out.println("test:" + ranks.get(i + 1).text() + " : " + title + " : " + musicLink);
-//				melonRepository.save(melon);
+//				System.out.println(i);
+//				System.out.println("title : " + titles.get(i).text());
+//				System.out.println("singers : " + singers.get(i));
+//				System.out.println("albums : " + albums.get(i).text());
+//				System.out.println("photos : " + photos.get(i).attr("src"));
+//				System.out.println("songNo:" + songNos.get(i).attr("data-song-no"));
+//				System.out.println("발매일:" + (newFormat.format(originDate)));
+//				System.out.println("장르:" + others.get(2).html());
+//				System.out.println("가사:" + lyric);
+			
 			}
 
-		} catch (java.io.IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -88,9 +102,7 @@ public class MusicService {
 
 		try {
 			Document doc = Jsoup.connect("https://www.youtube.com/results?search_query=" + title + "-MV").get();
-//			Document doc = Jsoup.connect("https://www.youtube.com/results").data("search_query", "아무노래-MV").post();
 			Elements musicVideoLink_el = doc.select("h3.yt-lockup-title a");
-//			Elements musicLink=doc.select("#video-title");
 
 			String musicVideoLink = musicVideoLink_el.attr("href");
 
@@ -104,5 +116,9 @@ public class MusicService {
 		}
 		return result;
 
+	}
+
+	public Music musicDetail(int id) {
+		return musicRepository.findById(id);
 	}
 }

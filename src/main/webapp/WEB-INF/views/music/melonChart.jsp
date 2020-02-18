@@ -11,12 +11,11 @@
 <script src="js/all.min.js"></script>
 </head>
 <body>
-
-	<hr />
+	<hr style="border-style: solid; border-width: 3px; border-color: limegreen;" />
 
 	<div class="container">
 		<div class="d-flex ">
-			<a href="#" title="MelOn 로고 - 홈으로 이동"> <img width="142" height="99" src="https://cdnimg.melon.co.kr/resource/image/web/common/logo_melon142x99.png" alt="MelOn 로고 이미지"></a>
+			<a href="/" title="MelOn 로고 - 홈으로 이동"> <img width="142" height="99" src="https://cdnimg.melon.co.kr/resource/image/web/common/logo_melon142x99.png" alt="MelOn 로고 이미지"></a>
 			<form class="form-inline">
 				<input class="form-control mr-sm-2" type="text" placeholder="Search">
 				<button class="btn" style="background-color: limegreen" type="submit">Search</button>
@@ -56,7 +55,7 @@
 						<td class="align-items-center"><div>${music.id}</div></td>
 
 						<td><img style="width: 60px;" src="${music.photo}"></td>
-						<td><i class="far fa-file-alt"></i></td>
+						<td><a href="/music/${music.id}"><i class="far fa-file-alt"></i></a></td>
 						<td>
 							<div style="font-size: 14px">
 								<a>${music.title}</a>
@@ -64,7 +63,7 @@
 							<div style="font-size: 12px">${music.singer}</div>
 						</td>
 						<td><a style="font-size: 12px">${music.album}</a></td>
-						<td><span><i class="far fa-heart"></i></span> ${music.heart}</td>
+						<td><span><i class="far fa-heart"></i></span> ${music.heartCount}</td>
 						<td><span style="color: limegreen"><i class="fas fa-play"></i></span></td>
 						<td><i class="fas fa-plus"></i></td>
 						<td><i class="fas fa-video"></i></td>
