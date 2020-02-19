@@ -17,7 +17,5 @@ public class Music {
 	private String genre;
 	private String lyrics;
 	private int songNo;
-	private int heartCount;
-
 
 }
