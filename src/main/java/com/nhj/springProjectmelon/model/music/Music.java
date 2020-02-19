@@ -17,5 +17,7 @@ public class Music {
 	private String genre;
 	private String lyrics;
 	private int songNo;
+	private String videoLink;
+	private int viewCount;
 
 }

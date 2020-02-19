@@ -1,10 +1,10 @@
 package com.nhj.springProjectmelon.service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -30,6 +30,40 @@ public class MusicService {
 	}
 
 	@Transactional
+	public int videoSave() {
+		//트래픽발생이 심해서 멜론 크롤링이랑 유튜브 크롤링은 분리했다.
+		int result = 0;
+
+		try {
+			List<Music> musics = musicRepository.findAll();
+			Music music = new Music();
+
+			for (int i = 0; i < musics.size(); i++) {
+
+				musics.get(i).getId();
+
+				String title = musics.get(i).getTitle();
+				title = title.replace(" ", "+");
+				title = title.replace("(", "%28");
+				title = title.replace(")", "%29");
+				title = title.replace(",", "%2C");
+				Document docYoutube = Jsoup.connect("https://www.youtube.com/results?search_query=" + title + "-MV")
+						.get();
+				Elements musicVideoLink_el = docYoutube.select("h3.yt-lockup-title a");
+				String musicVideoLink = musicVideoLink_el.attr("href");
+				String musicLink = musicVideoLink.substring(musicVideoLink.indexOf("=") + 1, musicVideoLink.length());
+
+				music.setId(musics.get(i).getId());
+				music.setVideoLink(musicLink);
+				musicRepository.saveById(music);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Transactional
 	public int musicSave() {
 		int result = 0;
 		try {
@@ -52,7 +86,7 @@ public class MusicService {
 				music.setTitle(titles.get(i).text());
 				music.setSinger(singers.get(i));
 				music.setAlbum(albums.get(i).text());
-			
+
 				music.setSongNo(Integer.parseInt(songNos.get(i).attr("data-song-no")));
 				int songNo = Integer.parseInt(songNos.get(i).attr("data-song-no"));
 
@@ -63,20 +97,20 @@ public class MusicService {
 				Elements photos = doc.select(".image_typeAll img");
 				Elements others = doc.select(".list dd");
 				Elements lyric_el = doc.select("#d_video_summary");
-				
+
 				String beforeLyrics = lyric_el.get(0).html();
 				String lyrics = beforeLyrics.substring(beforeLyrics.indexOf(">") + 1, beforeLyrics.length());
-		
-				Date originDate=new SimpleDateFormat("yyyy.MM.dd").parse(others.get(1).html());
-				SimpleDateFormat newFormat=new SimpleDateFormat("yyyy-MM-dd");
-				
+
+				Date originDate = new SimpleDateFormat("yyyy.MM.dd").parse(others.get(1).html());
+				SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 				music.setPhoto(photos.attr("src"));
 				music.setLyrics(lyrics);
-				music.setGenre(others.get(2).html());	
+				music.setGenre(others.get(2).html());
 				music.setAlbumDate((newFormat.format(originDate)));
-				
+
 				musicRepository.save(music);
-				
+
 //				System.out.println(i);
 //				System.out.println("title : " + titles.get(i).text());
 //				System.out.println("singers : " + singers.get(i));
@@ -86,32 +120,9 @@ public class MusicService {
 //				System.out.println("발매일:" + (newFormat.format(originDate)));
 //				System.out.println("장르:" + others.get(2).html());
 //				System.out.println("가사:" + lyric);
-			
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-
-	}
-
-	@Transactional
-	public int melonMusic(String title) {
-		int result = 0;
-
-		try {
-			Document doc = Jsoup.connect("https://www.youtube.com/results?search_query=" + title + "-MV").get();
-			Elements musicVideoLink_el = doc.select("h3.yt-lockup-title a");
-
-			String musicVideoLink = musicVideoLink_el.attr("href");
-
-			StringTokenizer str = new StringTokenizer(musicVideoLink, "=");
-			str.nextToken();
-			String musicLink = str.nextToken();
-			System.out.println(musicLink);
-
-		} catch (java.io.IOException e) {
 			e.printStackTrace();
 		}
 		return result;

@@ -1,4 +1,4 @@
-package com.nhj.springProjectmelon.model.likes;
+package com.nhj.springProjectmelon.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Likes {
-	private int id;
-	private int userId;
-	private int musicId;
+public class RespCM {
+	private int statusCode;
+	private String msg;
 }

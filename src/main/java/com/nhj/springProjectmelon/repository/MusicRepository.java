@@ -8,4 +8,6 @@ public interface MusicRepository {
 	List<Music> findAll();
 	int save(Music music);
 	Music findById(int id);
+	int saveById(Music music);
+
 }

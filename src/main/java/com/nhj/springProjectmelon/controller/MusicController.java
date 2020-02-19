@@ -19,15 +19,23 @@ public class MusicController {
 		model.addAttribute("musics",musicService.melonChart());
 		return "/music/melonChart";
 	}
-	@GetMapping("/insert/insert")
+	@GetMapping("/music/{id}")
+	public String musicDetail(@PathVariable int id,Model model) {
+		model.addAttribute("music",musicService.musicDetail(id));
+		return "/music/musicDetail";
+	}
+	
+	
+	
+	
+	@GetMapping("/music/musicSave")
 	public String insert() {
 		musicService.musicSave();
 		return "/music/melonChart";
 	}
-	@GetMapping("/music/{id}")
-	public String musicDetail(@PathVariable int id,Model model) {
-		model.addAttribute("music",musicService.musicDetail(id));
-
-		return "/music/musicDetail";
+	@GetMapping("/music/videoSave")
+	public String video(Model model) {
+		musicService.videoSave();
+		return "/music/melonChart";
 	}
 }

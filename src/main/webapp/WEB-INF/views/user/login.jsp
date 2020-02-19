@@ -11,17 +11,59 @@
 </head>
 <body>
 	<hr style="border-style: solid; border-width: 3px; border-color: limegreen;" />
-	<div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
-		<div>
-			<a href="/" title="Melon 메인">
-				<img src="https://cdnimg.melon.co.kr/resource/image/web/member/img_logo206x56.png" width="206" height="56" />
-			</a>
+
+	<div class="container ">
+		<div class="row text-center align-items-center" style="height: 50vh;">
+			<div class="col">
+				<div style="padding-bottom: 50px">
+					<a href="/" title="Melon 메인"> <img src="https://cdnimg.melon.co.kr/resource/image/web/member/img_logo206x56.png" width="206" height="56" />
+					</a>
+				</div>
+				<div>
+					<form>
+						<input id="username" type="text" placeholder="아이디 입력" style="width: 390px; height: 50px; padding: 0px 11px" /><br /> <input id="password" type="password" placeholder="비밀번호 입력"
+							style="width: 390px; height: 50px; padding: 0px 11px" />
+
+					</form>
+					<div style="padding: 20px; margin-right: 10px">
+						<input type="checkbox" id="inpSaveId" class="input_check"> <label for="inpSaveId" class="label_check">아이디 저장</label>
+					<a href="/user/join" style="color: silver; margin-left: 180px">회원가입</a>
+					</div>
+
+					<div>
+						<button id="login--submit" class="btn" style="background-color: limegreen; width: 390px; height: 60px;">
+							<span style="color: white; font-size: 18px">로그인</span>
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div>
-			<form>
-				<input placeholder="아이디"/>
-				<input placeholder="비밀번호"/>
-			</form>
-		</div>
-		
 	</div>
+	<script>
+		$('#login--submit')
+				.on(
+						'click',
+						function() {
+							var data = {
+								username : $('#username').val(),
+								password : $('#password').val()
+							};
+
+							$
+									.ajax(
+											{
+												type : 'POST',
+												url : '/user/login',
+												data : data,
+												contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+												dataType : 'json'
+											}).done(function(r) {
+										console.log(r)
+										alert('로그인 성공');
+										location.href = "/";
+									}).fail(function(r) {
+										console.log(r)
+										alert('로그인 실패');
+									});
+						});
+	</script>

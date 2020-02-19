@@ -19,6 +19,9 @@
 				<input class="form-control mr-sm-2" type="text" placeholder="Search">
 				<button class="btn" style="background-color: limegreen" type="submit">Search</button>
 			</form>
+			<div class="ml-auto">
+			<a href="/user/login" class="btn" style="background-color: limegreen;">로그인</a>
+			</div>
 		</div>
 
 

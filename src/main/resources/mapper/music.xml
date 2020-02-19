@@ -19,5 +19,8 @@
 		music(title,singer,album,photo,songNo,albumDate,genre,lyrics)
 		values(#{title},#{singer},#{album},#{photo},#{songNo},#{albumDate},#{genre},#{lyrics})
 	</insert>
+	<update id="saveById">
+		update music set videoLink=#{videoLink}	where id=#{id}
+	</update>
 
 </mapper>
