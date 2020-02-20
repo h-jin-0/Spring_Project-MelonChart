@@ -17,7 +17,7 @@ public class ReqJoinDto {
 	@NotBlank(message="유저네임을 입력하세요.")
 	private String username;
 	
-	@Pattern(regexp = "^[a-zA-Z0-9]*$", message = "유저네임은 영어와 숫자 조합만 가능합니다.")
+	@Pattern(regexp = "^[a-zA-Z가-힣]*$", message = "유저네임은 영어 또는 한글만 가능합니다.")
 	@Size(min=2,max=10, message = "이름 길이가 잘못되었습니다.")
 	@NotBlank(message="유저네임을 입력하세요.")
 	private String name;

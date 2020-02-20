@@ -22,30 +22,30 @@
 				<div style="border-style: solid; border-width: 1px; border-color: silver;" class="p-5 m-5">
 					<form>
 						<div class="form-group">
-							<label class="float-left">아이디:</label> <input type="text" class="form-control" onkeyup="keyCount('username')" id="username" placeholder="Enter ID" required="required" maxlength="15" />
+							<label class="float-left">아이디:</label> <input type="text" class="form-control" onkeyup="keyUp('username')" id="username" placeholder="Enter ID" required="required" maxlength="15" />
 							<div class="d-flex justify-content-between">
-								<span id="username--count">밸리데이션 체크</span><span id="username--count">0/15</span>
+								<span id="username--vali" style="font-size: 12px; color: red;">아이디 입력은 필수입니다.</span><span id="username--count"> 0/15</span>
 							</div>
 
 						</div>
 						<div class="form-group">
-							<label class="float-left">비밀번호:</label> <input type="password" class="form-control" onkeyup="keyCount('password')" placeholder="Enter Password" id="password" required="required" maxlength="20" />
+							<label class="float-left">비밀번호:</label> <input type="password" class="form-control" onkeyup="keyUp('password')" placeholder="Enter Password" id="password" required="required" maxlength="20" />
 							<div class="d-flex justify-content-between">
-								<span id="password--count">0/20</span><span id="password--count">0/20</span>
+								<span id="password--vali" style="font-size: 12px; color: red;">비밀번호 입력은 필수입니다.</span><span id="password--count">0/20</span>
 							</div>
 
 						</div>
 						<div class="form-group">
-							<label class="float-left">이름:</label> <input type="text" class="form-control" onkeyup="keyCount('name')" placeholder="Enter Name" id="name" required="required" maxlength="10" />
+							<label class="float-left">이름:</label> <input type="text" class="form-control" onkeyup="keyUp('name')" placeholder="Enter Name" id="name" required="required" maxlength="10" />
 							<div class="d-flex justify-content-between">
-								<span id="name--count">0/10</span><span id="name--count">0/10</span>
+								<span id="name--vali" style="font-size: 12px; color: red;">이름 입력은 필수입니다.</span><span id="name--count">0/10</span>
 							</div>
 
 						</div>
 						<div class="form-group">
-							<label class="float-left">이메일:</label> <input type="email" class="form-control" onkeyup="keyCount('email')" placeholder="Enter Email" id="email" required="required" maxlength="20" />
+							<label class="float-left">이메일:</label> <input type="email" class="form-control" onkeyup="keyUp('email')" placeholder="Enter Email" id="email" required="required" maxlength="20" />
 							<div class="d-flex justify-content-between">
-								<span id="email--count">0/20</span><span id="email--count">0/20</span>
+								<span id="email--vali" style="font-size: 12px; color: red;">이메일 입력은 필수 입니다.</span><span id="email--count">0/20</span>
 							</div>
 
 						</div>
@@ -91,30 +91,68 @@
 			});
 		});
 
-		function keyCount(field) {
-			var strLength = $('#' + field).val().length;
-			var datas={
-					field:field,
-					inputMsg: $('#' + field).val()
-					};
-			var maxLength = $('#' + field).attr('maxlength');
-			field += "--count";
-			$('#' + field).html(strLength + '/' + maxLength);
-		
-			$.ajax({
-				type : 'POST',
-				url : '/user/message',
-				data : JSON.stringify(datas),
-				contentType : 'application/json; charset=utf-8',
-				dataType : 'json'
-			}).done(function(r) {
-				alert(r);
-			}).fail(function(r) {
-			
-			});
+		function keyUp(field) {
+			var field_data = $('#' + field).val();
 
-		}
-	
-	
-		
+			keyUp_count(field, field_data);
+			validation_check(field, field_data);
+		};
+
+		function keyUp_count(field, field_data) {
+			var strLength = $('#' + field).val().length;
+			var maxLength = $('#' + field).attr('maxlength');
+			var span_count = field + "--count";
+
+			$('#' + span_count).html(strLength + '/' + maxLength);
+		};
+
+		function validation_check(field, field_data) {
+			var span_vali = field + "--vali";
+			var check_username = /^[A-Za-z0-9+]{5,15}$/;
+			var check_password = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+			var check_name = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]{2,10}$/
+			var check_email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+			if (field == "username") {
+				if (check_username.test(field_data) == false) {
+					$('#' + span_vali).html('5~15자리 영문 또는 숫자로 입력해주세요');
+				} else {
+					
+					 $.ajax({
+						type : 'GET',
+						url : '/user/doubleCheck/'+field_data,
+						dataType : 'json'
+					}).done(function(r) {
+						if (r.statusCode == -2) {
+							$('#' + span_vali).html('해당 아이디는 중복된 아이디입니다.');
+						} else {
+							$('#' + span_vali).html('');
+						}
+					}).fail(function(r) {
+						
+					}); 
+				}
+			} 
+			if (field == "password") {
+				if (check_password.test(field_data) == false) {
+					$('#' + span_vali).html('8~20자리의 영문,숫자,특수문자의 조합으로 입력헤주세요.');
+				} else {
+					$('#' + span_vali).html('');
+				}
+			}
+			if (field == "name") {
+				if (check_name.test(field_data) == false) {
+					$('#' + span_vali).html('2~10자리 영문 또는 한글로 입력해주세요.');
+				} else {
+					$('#' + span_vali).html('');
+				}
+			}
+			if (field == "email") {
+				if (check_email.test(field_data) == false) {
+					$('#' + span_vali).html('이메일 형식에 맞게 입력헤주세요.');
+				} else {
+					$('#' + span_vali).html('');
+				}
+			}
+		};
 	</script>
