@@ -20,27 +20,34 @@
 					</a>
 				</div>
 				<div style="border-style: solid; border-width: 1px; border-color: silver;" class="p-5 m-5">
-					<form class="was-validated">
+					<form>
 						<div class="form-group">
-							<label class="float-left">아이디:</label> <input type="text" class="form-control" onkeyup="keyCount('username')" id="username" placeholder="Enter ID" required="required" maxlength="15" /> 
-							<span id="usernamecount">0/15</span>
-							<div class="valid-feedback">Valid.</div>
-							<div class="invalid-feedback">Please fill out this field.</div>
+							<label class="float-left">아이디:</label> <input type="text" class="form-control" onkeyup="keyCount('username')" id="username" placeholder="Enter ID" required="required" maxlength="15" />
+							<div class="d-flex justify-content-between">
+								<span id="username--count">밸리데이션 체크</span><span id="username--count">0/15</span>
+							</div>
+
 						</div>
 						<div class="form-group">
-							<label class="float-left">비밀번호:</label> <input type="password" class="form-control" placeholder="Enter Password" id="password" required="required" maxlength="20" />
-							<div class="valid-feedback">Valid.</div>
-							<div class="invalid-feedback">Please fill out this field.</div>
+							<label class="float-left">비밀번호:</label> <input type="password" class="form-control" onkeyup="keyCount('password')" placeholder="Enter Password" id="password" required="required" maxlength="20" />
+							<div class="d-flex justify-content-between">
+								<span id="password--count">0/20</span><span id="password--count">0/20</span>
+							</div>
+
 						</div>
 						<div class="form-group">
-							<label class="float-left">이름:</label> <input type="text" class="form-control" placeholder="Enter Name" id="name" required="required" maxlength="10" />
-							<div class="valid-feedback">Valid.</div>
-							<div class="invalid-feedback">Please fill out this field.</div>
+							<label class="float-left">이름:</label> <input type="text" class="form-control" onkeyup="keyCount('name')" placeholder="Enter Name" id="name" required="required" maxlength="10" />
+							<div class="d-flex justify-content-between">
+								<span id="name--count">0/10</span><span id="name--count">0/10</span>
+							</div>
+
 						</div>
 						<div class="form-group">
-							<label class="float-left">이메일:</label> <input type="email" class="form-control" placeholder="Enter Email" id="email" required="required" maxlength="20" />
-							<div class="valid-feedback">Valid.</div>
-							<div class="invalid-feedback">Please fill out this field.</div>
+							<label class="float-left">이메일:</label> <input type="email" class="form-control" onkeyup="keyCount('email')" placeholder="Enter Email" id="email" required="required" maxlength="20" />
+							<div class="d-flex justify-content-between">
+								<span id="email--count">0/20</span><span id="email--count">0/20</span>
+							</div>
+
 						</div>
 					</form>
 
@@ -83,11 +90,31 @@
 				alert('회원가입 실패');
 			});
 		});
+
 		function keyCount(field) {
-			let strLength = $('#' + field).val().length;
-			let maxlength = $('#' + field).attr('maxlength');
-			field+="count";
-			console.log(field);
-			$('#'+field).innerHTML = strLength + '/' + maxlength;
+			var strLength = $('#' + field).val().length;
+			var datas={
+					field:field,
+					inputMsg: $('#' + field).val()
+					};
+			var maxLength = $('#' + field).attr('maxlength');
+			field += "--count";
+			$('#' + field).html(strLength + '/' + maxLength);
+		
+			$.ajax({
+				type : 'POST',
+				url : '/user/message',
+				data : JSON.stringify(datas),
+				contentType : 'application/json; charset=utf-8',
+				dataType : 'json'
+			}).done(function(r) {
+				alert(r);
+			}).fail(function(r) {
+			
+			});
+
 		}
+	
+	
+		
 	</script>
