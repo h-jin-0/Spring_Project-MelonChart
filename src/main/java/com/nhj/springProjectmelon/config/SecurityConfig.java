@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhj.springProjectmelon.model.RespCM;
@@ -32,17 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder encoded() {
 		return new BCryptPasswordEncoder();
 	}
+
 	@Autowired
 	private MyUserDetailService myUserDetailService;
-
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception { // 모든 요청을 받는다.
 		http.csrf().disable();
 
-		http.authorizeRequests()
-				.antMatchers("/music/**")
-				.permitAll().and().formLogin().loginPage("/user/login")
+		http.authorizeRequests().antMatchers("/music/**").permitAll().and().formLogin().loginPage("/user/login")
 				.loginProcessingUrl("/user/login") // POST만 낚아 챔
 				.successHandler(new AuthenticationSuccessHandler() {
 
@@ -50,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 							Authentication authentication) throws IOException, ServletException {
 						PrintWriter out = response.getWriter();
-						
+
 						ObjectMapper mapper = new ObjectMapper();
 						// String으로 저장
 						String jsonString = mapper.writeValueAsString(new RespCM(200, "ok"));
@@ -58,7 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						out.flush();
 
 					}
-				});
+				}).and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+			.logoutSuccessUrl("/").invalidateHttpSession(true);
+//		
 	}
 
 	@Override

@@ -36,6 +36,14 @@
 
 						</div>
 						<div class="form-group">
+							<label class="float-left">비밀번호 확인:</label> 
+							<input type="password" class="form-control" onkeyup="keyUp('password-check')" placeholder="Enter Password" id="password-check" required="required" maxlength="20" />
+							<div class="d-flex justify-content-between">
+								<span id="password-check--vali" style="font-size: 12px; color: red;"></span><span id="password-check--count">0/20</span>
+							</div>
+
+						</div>
+						<div class="form-group">
 							<label class="float-left">이름:</label> <input type="text" class="form-control" onkeyup="keyUp('name')" placeholder="Enter Name" id="name" required="required" maxlength="10" />
 							<div class="d-flex justify-content-between">
 								<span id="name--vali" style="font-size: 12px; color: red;">이름 입력은 필수입니다.</span><span id="name--count">0/10</span>
@@ -112,12 +120,11 @@
 			var check_password = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
 			var check_name = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]{2,10}$/
 			var check_email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
+			
 			if (field == "username") {
 				if (check_username.test(field_data) == false) {
 					$('#' + span_vali).html('5~15자리 영문 또는 숫자로 입력해주세요');
 				} else {
-					
 					 $.ajax({
 						type : 'GET',
 						url : '/user/doubleCheck/'+field_data,
@@ -136,6 +143,15 @@
 			if (field == "password") {
 				if (check_password.test(field_data) == false) {
 					$('#' + span_vali).html('8~20자리의 영문,숫자,특수문자의 조합으로 입력헤주세요.');
+				} else {
+					
+					$('#' + span_vali).html('');
+				}
+			}
+			if (field == "password-check") {
+				
+				if (field_data!=$('#password').val()) {
+					$('#' + span_vali).html('비밀번호가 일치하지 않습니다.');
 				} else {
 					$('#' + span_vali).html('');
 				}

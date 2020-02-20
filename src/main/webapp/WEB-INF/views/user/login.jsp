@@ -26,8 +26,7 @@
 
 					</form>
 					<div style="padding: 20px; margin-right: 10px">
-						<input type="checkbox" id="inpSaveId" class="input_check"> <label for="inpSaveId" class="label_check">아이디 저장</label>
-					<a href="/user/join" style="color: silver; margin-left: 180px">회원가입</a>
+						<input type="checkbox" id="inpSaveId" class="input_check"> <label for="inpSaveId" class="label_check">아이디 저장</label> <a href="/user/join" style="color: graytext; margin-left: 180px">회원가입</a>
 					</div>
 
 					<div>
@@ -35,6 +34,7 @@
 							<span style="color: white; font-size: 18px">로그인</span>
 						</button>
 					</div>
+
 				</div>
 			</div>
 		</div>

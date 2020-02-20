@@ -23,10 +23,15 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
 	@GetMapping("/user/login")
 	public String login(Model model) {
 		return "/user/login";
+	}
+	@GetMapping("/user/logout")
+	public String login() {
+		
+		return "/";
 	}
 
 	@GetMapping("/user/join")
