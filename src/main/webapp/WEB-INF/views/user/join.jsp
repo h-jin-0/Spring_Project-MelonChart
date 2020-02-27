@@ -51,9 +51,9 @@
 
 						</div>
 						<div class="form-group">
-							<label class="float-left">이메일:</label> <input type="email" class="form-control" onkeyup="keyUp('email')" placeholder="Enter Email" id="email" required="required" maxlength="20" />
+							<label class="float-left">이메일:</label> <input type="email" class="form-control" onkeyup="keyUp('email')" placeholder="Enter Email" id="email" required="required" maxlength="30" />
 							<div class="d-flex justify-content-between">
-								<span id="email--vali" style="font-size: 12px; color: red;">이메일 입력은 필수 입니다.</span><span id="email--count">0/20</span>
+								<span id="email--vali" style="font-size: 12px; color: red;">이메일 입력은 필수 입니다.</span><span id="email--count">0/30</span>
 							</div>
 
 						</div>

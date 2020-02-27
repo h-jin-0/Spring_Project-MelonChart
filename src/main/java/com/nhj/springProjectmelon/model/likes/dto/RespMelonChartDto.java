@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReqSaveDto {
+public class RespMelonChartDto {
+	private int id;
 	private int musicId;
-	private int userId;
+
 }

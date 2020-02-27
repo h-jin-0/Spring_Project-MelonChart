@@ -26,7 +26,7 @@ public class ReqJoinDto {
 	@NotBlank(message="패스워드를 입력하세요.")
 	private String password;
 	
-	@Size(min=10, max=20, message = "이메일 길이가 잘못되었습니다.")
+	@Size(min=10, max=30, message = "이메일 길이가 잘못되었습니다.")
 	@Email(message = "이메일 양식이 틀렸습니다.")
 	@NotBlank(message="이메일을 입력하세요.")
 	private String email;

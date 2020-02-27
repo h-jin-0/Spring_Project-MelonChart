@@ -10,13 +10,13 @@ import com.nhj.springProjectmelon.service.MusicService;
 
 @Controller
 public class MusicController {
-
+	
 	@Autowired
 	private MusicService musicService;
-
+	
 	@GetMapping({ "", "/" })
 	public String music(Model model) {
-		model.addAttribute("musics", musicService.melonChart());
+		model.addAttribute("musics", musicService.musicCharts());
 		return "/music/melonChart";
 	}
 

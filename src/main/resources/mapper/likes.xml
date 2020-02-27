@@ -12,7 +12,12 @@
 	</insert>
 	
 	<delete id="delete">
-		delete from likes where musicId=#{musicId}
+		delete from likes where musicId=#{musicId} and userId=#{userId}
 	</delete>
+	
+	<select id="findByUserId"
+		resultType="com.nhj.springProjectmelon.model.likes.dto.RespMelonChartDto">
+		select id,musicId from likes where userId=#{userId}
+	</select>
 
 </mapper>

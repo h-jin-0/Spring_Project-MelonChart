@@ -20,7 +20,16 @@
 		values(#{title},#{singer},#{album},#{photo},#{songNo},#{albumDate},#{genre},#{lyrics})
 	</insert>
 	<update id="saveById">
-		update music set videoLink=#{videoLink}	where id=#{id}
+		update music set videoLink=#{videoLink} where
+		id=#{id}
 	</update>
+	<select id="findAllWithLikes"
+		resultType="com.nhj.springProjectmelon.model.music.dto.RespMelonJoinDto">
+		select
+		m.id,m.title,m.singer,m.album,m.albumDate,m.photo,m.genre,m.lyrics,m.songNo,m.videoLink,m.viewCount,
+		ifnull((select count(l.id) from likes l where m.id=l.musicId group by
+		musicId),0) likesCount
+		from music m;
+	</select>
 
 </mapper>

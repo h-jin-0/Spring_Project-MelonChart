@@ -1,8 +1,14 @@
 package com.nhj.springProjectmelon.repository;
 
-import com.nhj.springProjectmelon.model.likes.dto.ReqSaveDto;
+import java.util.List;
+
+import com.nhj.springProjectmelon.model.likes.dto.ReqMelonChartDto;
+import com.nhj.springProjectmelon.model.likes.dto.RespMelonChartDto;
 
 public interface LikesRepository {
-	int save(ReqSaveDto reqSaveDto);
-	int delete(int musicId);
+	int save(ReqMelonChartDto reqMelonChartDto);
+
+	int delete(ReqMelonChartDto reqMelonChartDto);
+
+	List<RespMelonChartDto> findByUserId(int useId);
 }

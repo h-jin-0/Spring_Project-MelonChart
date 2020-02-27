@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nhj.springProjectmelon.model.likes.dto.RespMelonChartDto;
 import com.nhj.springProjectmelon.model.music.Music;
+import com.nhj.springProjectmelon.model.music.dto.RespMelonJoinDto;
+import com.nhj.springProjectmelon.repository.LikesRepository;
 import com.nhj.springProjectmelon.repository.MusicRepository;
 
 @Service
@@ -24,14 +27,41 @@ public class MusicService {
 	@Autowired
 	private MusicRepository musicRepository;
 
+	@Autowired
+	private MyUserDetailService myUserDetailService;
+
+	@Autowired
+	private LikesRepository likesRepository;
+
+	public List<RespMelonJoinDto> musicCharts() {
+
+		List<RespMelonJoinDto> musicInfo = melonChart();
+
+		if (myUserDetailService.getPrincipal() != null) {
+			int principalId = myUserDetailService.getPrincipal().getId();
+			List<RespMelonChartDto> likesInfo = likesRepository.findByUserId(principalId);
+
+			for (int j = 0; j < musicInfo.size(); j++) {
+				for (int i = 0; i < likesInfo.size(); i++) {
+					if (musicInfo.get(j).getId() == likesInfo.get(i).getMusicId()) {
+						musicInfo.get(j).setLikesStatus(true);
+					}
+				}
+			}
+			return musicInfo;
+		} else {
+			return musicInfo;
+		}
+	}
+
 	@Transactional
-	public List<Music> melonChart() {
-		return musicRepository.findAll();
+	public List<RespMelonJoinDto> melonChart() {
+		return musicRepository.findAllWithLikes();
 	}
 
 	@Transactional
 	public int videoSave() {
-		//트래픽발생이 심해서 멜론 크롤링이랑 유튜브 크롤링은 분리했다.
+		// 트래픽발생이 심해서 멜론 크롤링이랑 유튜브 크롤링은 분리했다.
 		int result = 0;
 
 		try {

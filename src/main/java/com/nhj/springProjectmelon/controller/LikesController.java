@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.nhj.springProjectmelon.model.RespCM;
-import com.nhj.springProjectmelon.model.ReturnCode;
 import com.nhj.springProjectmelon.service.LikesService;
 
 @Controller
@@ -22,19 +21,17 @@ public class LikesController {
 		int result = likesService.save(musicId);
 		
 		if (result == 1) {
-			System.out.println("save성공");
-			return new ResponseEntity<RespCM>(new RespCM(ReturnCode.아이디중복, "아이디중복"), HttpStatus.OK);
+			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		}
-		return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
+		return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
 	}
 	@DeleteMapping("/likes/delete/{musicId}")
 	public ResponseEntity<?> delete(@PathVariable int musicId) {
 		int result = likesService.delete(musicId);
 		
 		if (result == 1) {
-			System.out.println("delete성공");
-			return new ResponseEntity<RespCM>(new RespCM(ReturnCode.아이디중복, "아이디중복"), HttpStatus.OK);
+			return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
 		}
-		return new ResponseEntity<RespCM>(new RespCM(200, "ok"), HttpStatus.OK);
+		return new ResponseEntity<RespCM>(new RespCM(400, "fail"), HttpStatus.BAD_REQUEST);
 	}
 }
