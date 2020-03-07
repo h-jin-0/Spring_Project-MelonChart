@@ -18,6 +18,5 @@ public class Music {
 	private String lyrics;
 	private int songNo;
 	private String videoLink;
-	private int viewCount;
 
 }

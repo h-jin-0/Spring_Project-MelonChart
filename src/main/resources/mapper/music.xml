@@ -13,7 +13,19 @@
 		resultType="com.nhj.springProjectmelon.model.music.Music">
 		select * from music where id=#{id}
 	</select>
-
+	<select id="IdFindByTitle" resultType="int">
+		select id from music where title=#{title}
+	</select>
+	<select id="listAll" resultType="String">
+		select DISTINCT title from music where title like concat('%',concat(UPPER(#{result}),'%'))
+		or
+		title like concat('%',concat(LOWER(#{result}),'%'))
+	</select>
+	<select id="listAll2" resultType="String">
+		select DISTINCT singer from music where singer like concat('%',concat(UPPER(#{result}),'%'))
+		or
+		singer like concat('%',concat(LOWER(#{result}),'%'))
+	</select>
 	<insert id="save">
 		insert into
 		music(title,singer,album,photo,songNo,albumDate,genre,lyrics)
@@ -26,7 +38,7 @@
 	<select id="findAllWithLikes"
 		resultType="com.nhj.springProjectmelon.model.music.dto.RespMelonJoinDto">
 		select
-		m.id,m.title,m.singer,m.album,m.albumDate,m.photo,m.genre,m.lyrics,m.songNo,m.videoLink,m.viewCount,
+		m.id,m.title,m.singer,m.album,m.albumDate,m.photo,m.genre,m.lyrics,m.songNo,m.videoLink,
 		ifnull((select count(l.id) from likes l where m.id=l.musicId group by
 		musicId),0) likesCount
 		from music m;

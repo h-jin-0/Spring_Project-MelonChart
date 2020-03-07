@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Commnet {
+public class Comment {
 	private int id;
 	private int joinId;
 	private int userId;
 	private String content;
-	private String recommend;
-	private String opposite;
+	private int recommend;
+	private int opposite;
 	private String type;
-
 }

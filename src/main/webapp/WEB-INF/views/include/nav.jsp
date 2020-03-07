@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal" var="principal" />
@@ -9,11 +11,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+.ui-autocomplete {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.ui-menu-item {
+	font-size: 12px;
+}
+</style>
 <title>melon Chart</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+<script src="http://code.jquery.com/jquery-1.7.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
 <script src="js/all.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#search_form").autocomplete({
+			source : function(request, response) {
+
+				$.ajax({
+					url : "/autocomplete",
+					type : "post",
+					dataType : "json",
+					data : request,
+					success : function(data) {
+						response(data);
+					},
+					error : function(data) {
+						alert("에러가 발생하였습니다.")
+					}
+				});
+			}
+		});
+	});
+</script>
 </head>
 <body>
 
@@ -21,40 +58,50 @@
 		<hr style="border-style: solid; border-width: 3px; border-color: limegreen; margin-top: 0; margin-bottom: 50px" />
 		<c:choose>
 			<c:when test="${empty principal}">
-				<div >
-					<a href="/user/join" style="margin-left: 50px; font-size: 12px; color: graytext;">회원가입</a> <br /> <a href="/user/login" class="btn mx-5"
-						style="background-color: limegreen; color: white; width: 200px; padding: 8px 15px; font-size: 15px;">로그인</a>
+				<div style="margin-left: 50px;">
+					<div>
+						<a href="/user/join" style="margin-left: 50px; font-size: 12px; color: graytext;">회원가입</a> <br /> <a href="/user/login" class="btn "
+							style="background-color: limegreen; color: white; width: 85%; padding: 8px 15px; font-size: 15px;">로그인</a>
+					</div>
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div >
-					<a href="/user/logout" class="btn mx-5" style="background-color: limegreen; color: white; width: 200px; padding: 8px 15px; font-size: 15px;">로그아웃</a>
+				<div style="margin-left: 50px;">
+					<div>
+						<img src="/media/${principal.profile}" class="rounded-circle my__img ml-auto" width="50px" onerror="javascript:this.src='/images/unknown.png'" /><br />
+					</div>
+					<a href="/user/profile" style="font-size: 12px; color: graytext;">회원정보 수정</a> <br /> <a href="/user/logout" class="btn"
+						style="background-color: limegreen; color: white; width: 85%; padding: 8px 15px; font-size: 15px;">로그아웃</a>
 				</div>
 			</c:otherwise>
 		</c:choose>
-	</nav>
+		<br /> <br /> <br />
 
+		<div id="music_control"></div>
+		<br /> <span style="margin-left: 10px">나의 재생 목록</span><span type="button" onclick="changeVideoListAndStart();" style="color: limegreen; margin-left: 60px;"><i class="fas fa-play"></i></span>
+		<div style="border: 2px solid limegreen;">
+
+			<ul id="playList" class="list-group list-group-flush">
+			</ul>
+		</div>
+	</nav>
 
 	<hr style="border-style: solid; border-width: 3px; border-color: limegreen; margin-top: 0" />
 
 	<div style="width: 85%">
 		<div class="container">
 			<div class="d-flex ">
-				<a href="/"> <img width="142" height="99" src="https://cdnimg.melon.co.kr/resource/image/web/common/logo_melon142x99.png" />
+				<a href="/"> <img width="142" height="100" src="https://cdnimg.melon.co.kr/resource/image/web/common/logo_melon142x99.png" />
 				</a>
-				<form class="form-inline">
-					<input class="form-control mr-sm-2" type="text" placeholder="Search">
-					<button class="btn" style="background-color: limegreen" type="submit">Search</button>
-				</form>
-
+				<div class="input-group" style=" border:2px solid limegreen; width: 350px; height: 60px; margin-top: 30px;border-radius: 50px; padding: 10px">
+					<input id="search_form" type="text" class="form-control" placeholder="Search" style="border: 0">
+					<div class="input-group-append" style="padding: 0;">
+						<span style="color: limegreen;font-size: 30px;margin-left: 20px;" onclick="searchTitle()"><i class="fas fa-search"></i></span>
+					</div>
+				</div>
 			</div>
 
 			<hr>
 
-			<ul class="nav nav-tabs nav-justified">
-				<li class="nav-item"><a class="nav-link active" href="#">실시간</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">급상승</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">일간</a></li>
-				<li class="nav-item"><a class="nav-link disabled" href="#">주간</a></li>
-			</ul>
+
 			<br> <br> <br>

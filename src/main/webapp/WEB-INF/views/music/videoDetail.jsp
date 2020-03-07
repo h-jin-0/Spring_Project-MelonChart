@@ -1,39 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../include/nav.jsp"%>
-<h3>곡 정보</h3>
-<div style="border-style: solid; border-width: 1px; border-color: silver; height: 282px;" class="row">
-	<div style="width: 282px;">
-		<img style="width: 280px; height: 280px" src="${music.photo}">
-	</div>
-	<div style="width: 853px; padding: 40px 0px 26px 30px">
-		<div class="container">
-			<div>
-				<strong style="font-size: 22px; margin: 0px opx 8px;">${music.title}</strong>
-			</div>
-			<div style="font-size: 18px; color: limegreen">${music.singer}</div>
+<h3>뮤직 비디오</h3>
+<div style="border-style: solid; border-width: 1px; border-color: silver; height: 600px;" >
+<p align="center">
+	<iframe id="gangnamStyleIframe" width="100%" height="600px;" src="https://www.youtube.com/embed/${music.videoLink }" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+</p>
 
-			<table>
-				<tr>
-					<td>앨범</td>
-					<td>${music.album}</td>
-				</tr>
-				<tr>
-					<td>발매일</td>
-					<td>${music.albumDate}</td>
-				</tr>
-				<tr>
-					<td>장르</td>
-					<td>${music.genre}</td>
-				</tr>
-			</table>
-		</div>
-	</div>
 </div>
-<br>
-<h4>가사</h4>
-<hr>
-<div>${music.lyrics}</div>
-<br>
+<h4>${music.title}</h4>
+<p style="font-size: 14px; color: graytext;">${music.album}</p>
+<p>${music.singer}</p>
+
 <br>
 <hr />
 <br>
@@ -58,7 +35,7 @@
 						<textarea id="content" class="form-control" rows="3" placeholder="댓글을 입력해 주세요"></textarea>
 					</div>
 					<div class="col-sm-1">
-						<button type="button" id="mucic--comment--submit" style="width: 100%; height: 80%; margin-top: 10px">등 록</button>
+						<button type="button" id="video--comment--submit" style="width: 100%; height: 80%; margin-top: 10px">등 록</button>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -81,31 +58,35 @@
 					</span> <span style="padding-left: 30px">${comment.content}</span> <span class="d-block" style="padding-left: 30px"><fmt:formatDate value="${comment.writeDate}" pattern="yyyy-MM-dd hh:mm" /></span>
 				</p>
 				<c:choose>
-					<c:when test="${empty principal}">
-						<a class="btn" style="border-color: silver; color: red; padding: 0;"> <span onclick="go_login()"> <i class="fa-thumbs-up far"></i>
-						</span>
-						</a>
-						<div>${comment.recommend}</div>
-						<a class="btn" style="border-color: silver; color: blue; padding: 0;"> <span class="thumbsDown_${comment.id}" onclick="go_login()"><i class="fa-thumbs-down far"></i></span>
-						</a>
-						<div>${comment.opposite}</div>
-
-					</c:when>
-					<c:otherwise>
-						<a class="btn" style="border-color: silver; color: red; padding: 0;"> <span id="thumbs_up_${comment.id}" onclick="set_thumbsUp(${comment.id},'recommend')" class="thumbsUp_${comment.id}">
-								<i id="thumbsUp_no_${comment.id}" class="fa-thumbs-up far"></i>
-						</span>
-						</a>
-						<div id="recommend_${comment.id}">${comment.recommend}</div>
-						<a class="btn" style="border-color: silver; color: blue; padding: 0;"> <span id="thumbs_down_${comment.id}" class="thumbsDown_${comment.id}"
-							onclick="set_thumbsDown(${comment.id},'opposite')"><i id="thumbsDown_no_${comment.id}" class="fa-thumbs-down far"></i></span>
-						</a>
-						<div id="opposite_${comment.id}">${comment.opposite}</div>
-
-					</c:otherwise>
+				<c:when test="${empty principal}">
+					<a class="btn" style="border-color: silver; color: red; padding: 0;"> 
+				<span onclick="go_login()">
+					<i  class="fa-thumbs-up far"></i>
+				</span>
+				</a>
+				<div >${comment.recommend}</div>
+				<a class="btn"  style="border-color: silver; color: blue; padding: 0;"> 
+				<span class="thumbsDown_${comment.id}" onclick="go_login()"><i class="fa-thumbs-down far"></i></span>
+				</a>
+				<div >${comment.opposite}</div>
+				
+				</c:when>
+				<c:otherwise>
+					<a class="btn" style="border-color: silver; color: red; padding: 0;"> 
+				<span id="thumbs_up_${comment.id}" onclick="set_thumbsUp(${comment.id},'recommend')" class="thumbsUp_${comment.id}">
+					<i id="thumbsUp_no_${comment.id}" class="fa-thumbs-up far"></i>
+				</span>
+				</a>
+				<div id="recommend_${comment.id}">${comment.recommend}</div>
+				<a class="btn" style="border-color: silver; color: blue; padding: 0;"> 
+				<span id="thumbs_down_${comment.id}" class="thumbsDown_${comment.id}" onclick="set_thumbsDown(${comment.id},'opposite')" ><i id="thumbsDown_no_${comment.id}" class="fa-thumbs-down far"></i></span>
+				</a>
+				<div id="opposite_${comment.id}">${comment.opposite}</div>
+				
+				</c:otherwise>
 				</c:choose>
-
-
+			
+				
 			</div>
 		</c:forEach>
 	</div>
@@ -114,6 +95,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="/js/musicDetail.js"></script>
 <script>
+
 	function set_thumbsUp(comment_id,type){
 		if ($('.thumbsUp_'+comment_id+' i').attr('id')==('thumbsUp_no_'+comment_id)){
 			 $.ajax({
@@ -125,10 +107,9 @@
 					$('#thumbsUp_no_'+comment_id).parent().html('<i id="thumbsUp_yes_'+comment_id+'" class="fa-thumbs-up fas"></i>');
 					$('#'+type+'_'+comment_id).text(parseInt($('#'+type+'_'+comment_id).html())+1);
 					}else{
-						alert('추천 실패');
-					}
+						}
 				}).fail(function(r) {
-					alert('추천 실패');				
+					
 				}); 
 		}else if($('.thumbsUp_'+comment_id+' i').attr('id')=='thumbsUp_yes_'+comment_id){
 			 $.ajax({
@@ -140,10 +121,9 @@
 					$('#thumbsUp_yes_'+comment_id).parent().html('<i id="thumbsUp_no_'+comment_id+'" class="fa-thumbs-up far"></i>');
 					$('#'+type+'_'+comment_id).text(parseInt($('#'+type+'_'+comment_id).html())-1);
 					}else{
-						alert('추천 해제 실패');
-						}
+					}
 				}).fail(function(r) {
-					alert('추천 해제 실패');
+					
 				}); 
 		}
 	};
@@ -158,10 +138,9 @@
 					$('#thumbsDown_no_'+comment_id).parent().html('<i id="thumbsDown_yes_'+comment_id+'" class="fa-thumbs-down fas"></i>');
 					$('#'+type+'_'+comment_id).text(parseInt($('#'+type+'_'+comment_id).html())+1);
 					}else{
-						alert('반대 실패');
-						}
+					}
 				}).fail(function(r) {
-					alert('반대 실패');
+					
 				}); 
 		}else if($('.thumbsDown_'+comment_id+' i').attr('id')=='thumbsDown_yes_'+comment_id){
 			 $.ajax({
@@ -170,19 +149,20 @@
 					dataType : 'json'
 				}).done(function(r) {
 					if(r.msg=='ok'){
-						$('#thumbsDown_yes_'+comment_id).parent().html('<i id="thumbsDown_no_'+comment_id+'" class="fa-thumbs-down far"></i>');
-						$('#'+type+'_'+comment_id).text(parseInt($('#'+type+'_'+comment_id).html())-1);
+					$('#thumbsDown_yes_'+comment_id).parent().html('<i id="thumbsDown_no_'+comment_id+'" class="fa-thumbs-down far"></i>');
+					$('#'+type+'_'+comment_id).text(parseInt($('#'+type+'_'+comment_id).html())-1);
 					}else{
-						alert('반대 해제 실패');
 					}
 				}).fail(function(r) {
-					alert('반대 해제 실패');
+					
 				}); 
 		}
 	};
 	function go_login(){
 		alert('로그인 후 이용가능합니다.');
 		location.href='/user/login';
-	}
+			}
+
+
 </script>
 <%@include file="../include/footer.jsp"%>

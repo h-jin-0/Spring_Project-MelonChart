@@ -21,4 +21,4 @@ spring:
       max-file-size: 1MB
         
 file:
-  path: C:/src/springbootWork/springBlog/media/
+  path: C:/src/springboot/springProject-melon/media/

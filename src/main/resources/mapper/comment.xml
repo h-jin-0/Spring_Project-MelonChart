@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.nhj.springProjectmelon.repository.CommentRepository">
+
+	<insert id="Musicsave" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.nhj.springProjectmelon.model.comment.dto.RespMusicDetailDto">
+		insert into
+		comment(joinId,userId,content,type,writeDate)
+		values(#{joinId},#{userId},#{content},#{type},now())
+	</insert>
+
+	<select id="findById"
+		resultType="com.nhj.springProjectmelon.model.comment.dto.RespMusicDetailDto">
+		select
+		c.id,c.content,c.recommend,c.opposite,c.writeDate,u.username,u.profile
+		from comment c
+		inner join user u
+		on c.userId=u.id
+		where c.id=#{id}
+	</select>
+
+	<select id="findAll"
+		resultType="com.nhj.springProjectmelon.model.comment.dto.RespMusicDetailDto">
+		select
+		c.id,c.content,c.recommend,c.opposite,c.writeDate,u.username,u.profile
+		from comment c
+		inner join user u
+		on c.userId=u.id
+		where type=#{type} and
+		joinId=#{id} order by id desc
+	</select>
+
+	<select id="userIdFindById" resultType="int">
+		select userId from
+		comment where id=#{id}
+	</select>
+	
+	<insert id="recommendPlus">
+		update comment set recommend=recommend+1 where
+		id=#{id};
+	</insert>
+		<insert id="oppositePlus">
+		update comment set opposite=opposite+1 where
+		id=#{id};
+	</insert>
+		<insert id="recommendMinus">
+		update comment set recommend=recommend-1 where
+		id=#{id};
+	</insert>
+		<insert id="oppositeMinus">
+		update comment set opposite=opposite-1 where
+		id=#{id};
+	</insert>
+	
+	<delete id="delete">
+		delete from comment where id=#{id}
+	</delete>
+</mapper>

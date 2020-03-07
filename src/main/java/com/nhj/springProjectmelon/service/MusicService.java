@@ -162,4 +162,8 @@ public class MusicService {
 	public Music musicDetail(int id) {
 		return musicRepository.findById(id);
 	}
+
+	public int serarchByTitle(String searchTitle) {
+		return musicRepository.IdFindByTitle(searchTitle);
+	}
 }

@@ -16,13 +16,19 @@
 		user(username,name,password,email)
 		values(#{username},#{name},#{password},#{email})
 	</insert>
-	
+	<select id="findById" resultType="com.nhj.springProjectmelon.model.user.User">
+		select # from user
+		where id=#{id}
+	</select>
 	<select id="authentication"
 		resultType="com.nhj.springProjectmelon.model.user.User">
 		select * from user
 		where username =
 		#{username}
 	</select>
-
+	<update id="update">
+		update user set password=#{password},
+		profile=#{profile} where id=#{id}
+	</update>
 
 </mapper>

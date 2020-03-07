@@ -40,30 +40,27 @@
 		</div>
 	</div>
 	<script>
-		$('#login--submit')
-				.on(
-						'click',
-						function() {
-							var data = {
-								username : $('#username').val(),
-								password : $('#password').val()
-							};
+	$('#login--submit').on('click', function() {
+		var data = {
+			username : $('#username').val(),
+			password : $('#password').val()
+		};
 
-							$
-									.ajax(
-											{
-												type : 'POST',
-												url : '/user/login',
-												data : data,
-												contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-												dataType : 'json'
-											}).done(function(r) {
-										console.log(r)
-										alert('로그인 성공');
-										location.href = "/";
-									}).fail(function(r) {
-										console.log(r)
-										alert('로그인 실패');
-									});
-						});
+		$.ajax({
+			type : 'POST',
+			url : '/user/login',
+			data : data,
+			contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+			dataType : 'json'
+		}).done(function(r) {
+			if (r.msg == 'ok') {
+				alert('로그인 성공');
+				location.href = "/";
+			}else{
+				alert('로그인 실패');
+				}
+		}).fail(function(r) {
+			alert('로그인 실패');
+		});
+	});
 	</script>

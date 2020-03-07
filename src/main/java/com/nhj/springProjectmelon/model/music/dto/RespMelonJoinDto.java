@@ -18,7 +18,6 @@ public class RespMelonJoinDto {
 	private String lyrics;
 	private int songNo;
 	private String videoLink;
-	private int viewCount;
 	private int likesCount;
 	private boolean likesStatus;
 

@@ -39,7 +39,7 @@
 							<label class="float-left">비밀번호 확인:</label> 
 							<input type="password" class="form-control" onkeyup="keyUp('password-check')" placeholder="Enter Password" id="password-check" required="required" maxlength="20" />
 							<div class="d-flex justify-content-between">
-								<span id="password-check--vali" style="font-size: 12px; color: red;"></span><span id="password-check--count">0/20</span>
+								<span id="password-check--vali" style="font-size: 12px; color: red;">비밀번호가 일치하지 않습니다.</span><span id="password-check--count">0/20</span>
 							</div>
 
 						</div>
@@ -85,7 +85,7 @@
 				contentType : 'application/json; charset=utf-8',
 				dataType : 'json'
 			}).done(function(r) {
-				if (r.statusCode == 200) {
+				if (r.msg == 'ok') {
 					alert('회원가입 성공');
 					location.href = '/user/login';
 				} else {

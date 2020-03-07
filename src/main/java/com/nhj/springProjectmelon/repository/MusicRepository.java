@@ -11,4 +11,7 @@ public interface MusicRepository {
 	Music findById(int id);
 	int saveById(Music music);
 	List<RespMelonJoinDto> findAllWithLikes();
+	List<String> listAll(String result);
+	List<String> listAll2(String result);
+	int IdFindByTitle(String searchTitle);
 }
