@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.nhj.springProjectmelon.repository.PlayListRepository">
+
+	<insert id="save">
+		insert into
+		playList(listName,musicId,userId)
+		values(#{listName},#{checkedId},#{userId})
+	</insert>
+
+	<select id="findAll"
+		resultType="com.nhj.springProjectmelon.model.playList.dto.RespAddListPopUpDto">
+		select listName,count(listName) as listCount from
+		playList
+		where userId=#{userId} group by listName
+	</select>
+
+	<select id="findByListName"
+		resultType="com.nhj.springProjectmelon.model.playList.dto.RespMyPlayListDetailDto">
+		select
+		p.id,p.listName,p.musicId,m.title,m.singer,m.album,m.photo,m.genre,m.photo
+		from
+		playList p inner join music m on p.musicId=m.id where
+		userId=#{userId} and
+		listName=#{listName};
+	</select>
+
+	<delete id="delete">
+		delete from playList where userId=#{userId} and
+		listName=#{listName}
+	</delete>
+	
+	<delete id="myPlayListDelete">
+		delete from playList where id=#{id}
+	</delete>
+</mapper>

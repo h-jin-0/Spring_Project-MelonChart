@@ -2,6 +2,14 @@
 <%@include file="../include/nav.jsp"%>
 
 <h3>멜론 차트 100</h3>
+
+
+<button type="button" class="btn btn-outline-secondary m-3" style="border-radius: 50px;">
+	<i class="fas fa-play"></i> 듣기
+</button>
+<button type="button" onclick="openList()" class="btn btn-outline-secondary m-3" style="border-radius: 50px;">
+	<i class="fas fa-plus"></i> 담기
+</button>
 <table class="table">
 	<thead>
 		<tr>
@@ -20,7 +28,7 @@
 	<tbody>
 		<c:forEach var="music" items="${musics}">
 			<tr>
-				<td><input type="checkbox" id="defaultCheck" name="example2"></td>
+				<td><input type="checkbox" name="musicCheckbox" value="${music.id}"></td>
 				<td class="align-items-center"><div>${music.id}</div></td>
 
 				<td><img style="width: 60px;" src="${music.photo}"></td>
@@ -55,7 +63,6 @@
 					<c:otherwise>
 						<td><span onclick="changeVideoAndStart('${music.videoLink}','${music.photo}','${music.title}','${music.singer}');" style="color: limegreen"><i class="fas fa-play"></i></span></td>
 					</c:otherwise>
-
 				</c:choose>
 
 				<td><span onclick="musicList('${music.videoLink}','${music.title}','${music.singer}')"><i class="fas fa-plus"></i></span></td>
@@ -68,11 +75,39 @@
 <div id="video_iframe" style="display: none;"></div>
 
 <script>
-	function searchTitle(){
-		var search_title=$('#search_form').val();
-		console.log(search_title);
-		location.href='/music/search/'+search_title;
-	}
+	var popUp
+	var checkedIds= new Array();
+
+	function openList(){
+		popUp=window.open('/playList','담기 클릭','width=400, height=500, toolbar=no, menubar=no, scrollbars=no, resizable=yes');
+		}
+	function getCheckboxVal(listName){
+		$("input[name=musicCheckbox]:checked").each(function() {
+			checkedIds.push($(this).val());
+		 });	
+			var data = { 
+					listName: listName,
+					checkedIds: checkedIds };
+			$.ajax({
+				type:'POST',
+				url : '/playList/addList',
+		        data: JSON.stringify(data),
+		        contentType : 'application/json; charset=utf-8',
+		        dataType : 'json'
+			}).done(function(r) {
+				if(r.msg=='ok'){
+				alert('플레이리스트 추가 성공');
+				$("input[name=musicCheckbox]:checked").each(function() {
+				$(this).attr("checked", false);
+				});
+				}else{
+					alert('플레이리스트 추가 실패');
+					}
+
+			}).fail(function(r) {
+				alert('플레이리스트 추가 실패');
+			});
+	} 
 
 	var tag = document.createElement('script');
 	tag.src = "https://www.youtube.com/iframe_api";
@@ -82,16 +117,16 @@
 	var player;
 	
 	function addMusicForm(music_photo,music_title,music_singer){
-	console.log(music_photo);
-	var items='<div style="width: 100%; height: 120px; background-color: black;">';
-	items+='<div class="mx-3"><div style="color: white;">현재 재생중인 노래</div>';
-	items+='<img style="width: 60px;" src="'+music_photo+'">';
-	items+='<span style="color: white; font-size: 30px; margin-left: 20px;" onclick="playYoutube();"><i class="far fa-play-circle"></i></span>';
-	items+='<span style="color: white; font-size: 30px"><i class="far fa-pause-circle" onclick="pauseYoutube();"></i></span>';
-	items+='<span style="color: white; font-size: 30px"><i class="far fa-stop-circle" onclick="stopYoutube();"></i></span><br/>';
-	items+='<font color="white"><MARQUEE id="mymarquee" bgColor="black">'+music_title+' - '+music_singer+'</MARQUEE></font>';
-	items+='</div></div>';
-	$('#music_control').html(items);
+		
+		var items='<div style="width: 100%; height: 120px; background-color: black;">';
+		items+='<div class="mx-3"><div style="color: white;">현재 재생중인 노래</div>';
+		items+='<img style="width: 60px;" src="'+music_photo+'">';
+		items+='<span style="color: white; font-size: 30px; margin-left: 20px;" onclick="playYoutube();"><i class="far fa-play-circle"></i></span>';
+		items+='<span style="color: white; font-size: 30px"><i class="far fa-pause-circle" onclick="pauseYoutube();"></i></span>';
+		items+='<span style="color: white; font-size: 30px"><i class="far fa-stop-circle" onclick="stopYoutube();"></i></span><br/>';
+		items+='<font color="white"><MARQUEE id="mymarquee" bgColor="black">'+music_title+' - '+music_singer+'</MARQUEE></font>';
+		items+='</div></div>';
+		$('#music_control').html(items);
 	};
 
 	function onYouTubeIframeAPIReady () {
@@ -125,7 +160,7 @@
 		$('#playList').append('<li class="list-group-item" style="font-size:12px">'+music_title+' - '+music_singer+'</li>');
 	}
 	
-    function changeVideoListAndStart(hs) {
+    function changeVideoListAndStart() {
         player.loadPlaylist(list, 0, 0, 'large');
     }
 	function set_heart(music_id){

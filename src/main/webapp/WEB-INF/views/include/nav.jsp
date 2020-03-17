@@ -50,6 +50,11 @@
 			}
 		});
 	});
+	function searchTitle() {
+		var search_title = $('#search_form').val();
+		console.log(search_title);
+		location.href = '/music/search/' + search_title;
+	}
 </script>
 </head>
 <body>
@@ -72,6 +77,8 @@
 					</div>
 					<a href="/user/profile" style="font-size: 12px; color: graytext;">회원정보 수정</a> <br /> <a href="/user/logout" class="btn"
 						style="background-color: limegreen; color: white; width: 85%; padding: 8px 15px; font-size: 15px;">로그아웃</a>
+						<br/><br/>
+							<a href="/playList/myPlayList">나의 플레이리스트</a>
 				</div>
 			</c:otherwise>
 		</c:choose>
@@ -93,14 +100,14 @@
 			<div class="d-flex ">
 				<a href="/"> <img width="142" height="100" src="https://cdnimg.melon.co.kr/resource/image/web/common/logo_melon142x99.png" />
 				</a>
-				<div class="input-group" style=" border:2px solid limegreen; width: 350px; height: 60px; margin-top: 30px;border-radius: 50px; padding: 10px">
+				<div class="input-group" style="border: 2px solid limegreen; width: 350px; height: 60px; margin-top: 30px; border-radius: 50px; padding: 10px">
 					<input id="search_form" type="text" class="form-control" placeholder="Search" style="border: 0">
 					<div class="input-group-append" style="padding: 0;">
-						<span style="color: limegreen;font-size: 30px;margin-left: 20px;" onclick="searchTitle()"><i class="fas fa-search"></i></span>
+						<span style="color: limegreen; font-size: 30px; margin-left: 20px;" onclick="searchTitle()"><i class="fas fa-search"></i></span>
 					</div>
 				</div>
 			</div>
-
+		
 			<hr>
 
 

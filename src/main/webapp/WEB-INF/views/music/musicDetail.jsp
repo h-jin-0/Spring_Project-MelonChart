@@ -119,7 +119,6 @@
 			 $.ajax({
 					type : 'post',
 					url : '/comment/plus/'+type+'/'+comment_id, 
-					dataType : 'json'
 				}).done(function(r) {
 					if(r.msg=='ok'){
 					$('#thumbsUp_no_'+comment_id).parent().html('<i id="thumbsUp_yes_'+comment_id+'" class="fa-thumbs-up fas"></i>');
@@ -134,7 +133,6 @@
 			 $.ajax({
 					type : 'post',
 					url : '/comment/minus/'+type+'/'+comment_id,
-					dataType : 'json'
 				}).done(function(r) {
 					if(r.msg=='ok'){
 					$('#thumbsUp_yes_'+comment_id).parent().html('<i id="thumbsUp_no_'+comment_id+'" class="fa-thumbs-up far"></i>');
@@ -152,7 +150,6 @@
 			 $.ajax({
 					type : 'post',
 					url : '/comment/plus/'+type+'/'+comment_id, 
-					dataType : 'json'
 				}).done(function(r) {
 					if(r.msg=='ok'){
 					$('#thumbsDown_no_'+comment_id).parent().html('<i id="thumbsDown_yes_'+comment_id+'" class="fa-thumbs-down fas"></i>');
@@ -167,7 +164,6 @@
 			 $.ajax({
 					type : 'post',
 					url : '/comment/minus/'+type+'/'+comment_id,
-					dataType : 'json'
 				}).done(function(r) {
 					if(r.msg=='ok'){
 						$('#thumbsDown_yes_'+comment_id).parent().html('<i id="thumbsDown_no_'+comment_id+'" class="fa-thumbs-down far"></i>');
