@@ -9,6 +9,11 @@
 		resultType="com.nhj.springProjectmelon.model.music.Music">
 		select * from music order by id
 	</select>
+
+	<select id="listenListfindById"
+		resultType="com.nhj.springProjectmelon.model.music.dto.RespListenListDto">
+		select title,singer,photo,videoLink from music where id=#{id}
+	</select>
 	<select id="findById"
 		resultType="com.nhj.springProjectmelon.model.music.Music">
 		select * from music where id=#{id}
@@ -40,8 +45,8 @@
 		select
 		m.id,m.title,m.singer,m.album,m.albumDate,m.photo,m.genre,m.lyrics,m.songNo,m.videoLink,
 		ifnull((select count(l.id) from likes l where m.id=l.musicId group by
-		musicId),0) likesCount
-		from music m;
+		musicId),0) likesCount 
+		from music m limit #{startPage},#{perPageNum}
 	</select>
 
 </mapper>

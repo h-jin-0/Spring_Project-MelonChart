@@ -26,10 +26,15 @@ public class MusicController {
 
 	@GetMapping({ "", "/" })
 	public String music(Model model) {
-		model.addAttribute("musics", musicService.musicCharts());
+		model.addAttribute("musics", musicService.musicCharts(1));
 		return "/music/melonChart";
 	}
-
+	@GetMapping("/music/paging/{pageNum}")
+	public String musicPaging(Model model,@PathVariable int pageNum) {
+		model.addAttribute("musics", musicService.musicCharts(pageNum));
+		return "/music/melonChart";
+	}
+	
 	@PostMapping("/autocomplete")
 	public @ResponseBody List<String> AutoTest(String term) {
 		List<String> list = musicRepository.listAll(term);

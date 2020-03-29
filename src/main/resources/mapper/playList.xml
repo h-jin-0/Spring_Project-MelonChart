@@ -18,21 +18,32 @@
 		where userId=#{userId} group by listName
 	</select>
 
+	<select id="findIdByListName"
+		resultType="com.nhj.springProjectmelon.model.playList.dto.RespListenListAllDto">
+		select musicId from playList where userId=#{userId} and listName=#{listName}
+	</select>
+
+	<select id="totalCount" resultType="int">
+		select count(*) from playList
+		where listName=#{listName}
+	</select>
+
 	<select id="findByListName"
 		resultType="com.nhj.springProjectmelon.model.playList.dto.RespMyPlayListDetailDto">
 		select
-		p.id,p.listName,p.musicId,m.title,m.singer,m.album,m.photo,m.genre,m.photo
+		p.id,p.listName,p.musicId,m.title,m.singer,m.album,m.photo,m.genre,m.photo,m.videoLink
 		from
 		playList p inner join music m on p.musicId=m.id where
 		userId=#{userId} and
-		listName=#{listName};
+		listName=#{listName} limit
+		#{startPage},#{perPageNum}
 	</select>
 
 	<delete id="delete">
 		delete from playList where userId=#{userId} and
 		listName=#{listName}
 	</delete>
-	
+
 	<delete id="myPlayListDelete">
 		delete from playList where id=#{id}
 	</delete>

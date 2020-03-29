@@ -22,6 +22,7 @@ $('#mucic--comment--submit').on('click', function() {
 	}).done(function(r) {
 		if (r.status.statusCode == 200) {
 			alert('댓글 등록 성공');
+			$('#content').val('');
 			makeCommentItem(r);
 		} else {
 			alert('댓글 등록 실패');
@@ -48,6 +49,7 @@ $('#video--comment--submit').on('click', function() {
 		if (r.status.statusCode == 200) {
 			alert('댓글 등록 성공');
 			makeCommentItem(r);
+			$('#content').val('');
 		} else {
 			alert('댓글 등록 실패');
 		}

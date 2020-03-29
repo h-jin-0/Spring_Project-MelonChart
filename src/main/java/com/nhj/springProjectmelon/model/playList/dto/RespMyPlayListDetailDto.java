@@ -16,4 +16,5 @@ public class RespMyPlayListDetailDto {
 	private String album;
 	private String photo;
 	private String genre;
+	private String videoLink;
 }

@@ -43,13 +43,7 @@
 		</tbody>
 	</table>
 	<div>
-		<ul class="pagination pagination-sm justify-content-center ">
-			<li class="page-item m-1"><a class="page-link" href="#">&lt</a></li>
-			<li class="page-item m-1"><a class="page-link" href="#">1</a></li>
-			<li class="page-item active m-1"><a class="page-link" href="#">2</a></li>
-			<li class="page-item m-1"><a class="page-link" href="#">3</a></li>
-			<li class="page-item m-1"><a class="page-link" href="#">&gt</a></li>
-		</ul>
+		
 		<button onclick="newPlayList()" class="btn btn-success btn-sm" style="border-radius: 50px; margin-left: 130px; font-size: 13px;">플레이리스트 만들기</button>
 	</div> 
 </body>
@@ -59,7 +53,7 @@
 
 <script>
 	function newPlayList() {
-		window.open('/newPlayList', '플레이리스트 추가','width=400, height=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes');
+		child=window.open('/newPlayList', '플레이리스트 추가','width=400, height=200, toolbar=no, menubar=no, scrollbars=no, resizable=yes');
 		
 	}
 	function savePlayList(listName) {

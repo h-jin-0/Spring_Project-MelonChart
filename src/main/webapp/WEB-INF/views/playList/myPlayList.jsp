@@ -16,9 +16,9 @@
 		<c:forEach var="playList" items="${playLists}" varStatus="status">
 			<tr id="playList--${playList.listName}">
 				<td>${status.count}</td>
-				<td><a href="/playList/myPlayListDetail/${playList.listName}">${playList.listName}</a></td>
+				<td><a href="/playList/myPlayListDetail/${playList.listName}/1">${playList.listName}</a></td>
 				<td>${playList.listCount}곡</td>
-				<td><i class="fas fa-play"></i></td>
+				<td><i onclick="playCheckbox(2,'${playList.listName}');" class="fas fa-play"></i></td>
 				<td><i onclick="playListDelete('${playList.listName}')" class="fas fa-trash-alt"></i></td>
 			</tr>
 		</c:forEach>

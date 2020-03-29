@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReqMyPlayListDto {
+public class ReqListenListAllDto {
 	private String listName;
-	private int userId;	
-	private int startPage;
-	private int perPageNum;
+	private int userId;
 }

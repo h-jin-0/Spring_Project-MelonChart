@@ -19,7 +19,7 @@
 	<form name="form" id="form" role="form" method="post">
 		<div class="row">
 			<div class="col-sm-1">
-				<img src="../media/${principal.profile}" class="rounded-circle my__img ml-auto" width="70px" onerror="javascript:this.src='/images/unknown.png'" />
+				<img src="/media/${principal.profile}" class="rounded-circle my__img ml-auto" width="70px" onerror="javascript:this.src='/images/unknown.png'" />
 			</div>
 			<c:choose>
 				<c:when test="${empty principal}">

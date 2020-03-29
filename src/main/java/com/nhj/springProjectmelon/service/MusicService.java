@@ -17,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nhj.springProjectmelon.model.likes.dto.RespMelonChartDto;
 import com.nhj.springProjectmelon.model.music.Music;
+import com.nhj.springProjectmelon.model.music.dto.ReqPageDto;
+import com.nhj.springProjectmelon.model.music.dto.RespListenListDto;
 import com.nhj.springProjectmelon.model.music.dto.RespMelonJoinDto;
+import com.nhj.springProjectmelon.model.playList.dto.ReqListenListDto;
 import com.nhj.springProjectmelon.repository.LikesRepository;
 import com.nhj.springProjectmelon.repository.MusicRepository;
 
@@ -33,9 +36,11 @@ public class MusicService {
 	@Autowired
 	private LikesRepository likesRepository;
 
-	public List<RespMelonJoinDto> musicCharts() {
-
-		List<RespMelonJoinDto> musicInfo = melonChart();
+	public List<RespMelonJoinDto> musicCharts(int startPage) {
+		ReqPageDto reqPageDto = new ReqPageDto();
+		reqPageDto.setPerPageNum(50);
+		reqPageDto.setStartPage(startPage);
+		List<RespMelonJoinDto> musicInfo = musicRepository.findAllWithLikes(reqPageDto);
 
 		if (myUserDetailService.getPrincipal() != null) {
 			int principalId = myUserDetailService.getPrincipal().getId();
@@ -52,11 +57,6 @@ public class MusicService {
 		} else {
 			return musicInfo;
 		}
-	}
-
-	@Transactional
-	public List<RespMelonJoinDto> melonChart() {
-		return musicRepository.findAllWithLikes();
 	}
 
 	@Transactional
@@ -113,6 +113,7 @@ public class MusicService {
 
 			}
 			for (int i = 0; i < titles.size(); i++) {
+
 				music.setTitle(titles.get(i).text());
 				music.setSinger(singers.get(i));
 				music.setAlbum(albums.get(i).text());
@@ -127,7 +128,6 @@ public class MusicService {
 				Elements photos = doc.select(".image_typeAll img");
 				Elements others = doc.select(".list dd");
 				Elements lyric_el = doc.select("#d_video_summary");
-
 				String beforeLyrics = lyric_el.get(0).html();
 				String lyrics = beforeLyrics.substring(beforeLyrics.indexOf(">") + 1, beforeLyrics.length());
 
@@ -165,5 +165,16 @@ public class MusicService {
 
 	public int serarchByTitle(String searchTitle) {
 		return musicRepository.IdFindByTitle(searchTitle);
+	}
+
+	public List<RespListenListDto> findById(ReqListenListDto reqListenListDto) {
+		List<RespListenListDto> reqListenListDtos = new ArrayList<RespListenListDto>();
+		for (int findId : reqListenListDto.getList()) {
+			RespListenListDto result = musicRepository.listenListfindById(findId);
+			if (result != null) {
+				reqListenListDtos.add(result);
+			}
+		}
+		return reqListenListDtos;
 	}
 }

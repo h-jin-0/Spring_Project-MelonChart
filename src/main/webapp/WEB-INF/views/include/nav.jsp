@@ -84,13 +84,8 @@
 		</c:choose>
 		<br /> <br /> <br />
 
-		<div id="music_control"></div>
-		<br /> <span style="margin-left: 10px">나의 재생 목록</span><span type="button" onclick="changeVideoListAndStart();" style="color: limegreen; margin-left: 60px;"><i class="fas fa-play"></i></span>
-		<div style="border: 2px solid limegreen;">
-
-			<ul id="playList" class="list-group list-group-flush">
-			</ul>
-		</div>
+		<div id="music_control" style="width: 100%"></div>
+		
 	</nav>
 
 	<hr style="border-style: solid; border-width: 3px; border-color: limegreen; margin-top: 0" />
